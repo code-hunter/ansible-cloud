@@ -1,0 +1,143 @@
+# Name the components on this agent
+a1.sources = cpu-source mem-source disk-source net-source net-summary-source monitor-source log runtime-info-source
+#a1.sources = runtime-info-source
+#a1.sources = disk-source
+#a1.sources = log
+a1.sinks = logsink k4 hdfsSink
+a1.channels = c1 c2
+
+# Describe/configure the source
+#a1.sources.r1.type = netcat
+#a1.sources.r1.bind = localhost
+#a1.sources.r1.port = 44444
+
+#a1.sources.log.type = spooldir
+#a1.sources.log.channels = c1
+#a1.sources.log.spoolDir = /root/hadoop/hadoop-2.5.2/logs/
+#a1.sources.log.fileHeader = true
+
+a1.sources.log.type = com.tscloud.agent.flume.source.ServiceRoleLogDataFlumeSource
+#a1.sources.log.consoleManagerUrl=http://192.168.40.19:5058/cloud/rest/console/serverRestServer/getServicerRoleByServerHostName
+a1.sources.log.consoleManagerUrl={{console_manager_url}}
+a1.sources.log.systemConfigureUrl={{system_configure_url}}
+a1.sources.log.channels = c2
+a1.sources.log.logStdErr =true
+a1.sources.log.batchSize = 20
+
+
+a1.sources.cpu-source.type = com.tscloud.agent.flume.source.CPUInfoSource
+a1.sources.cpu-source.channels = c1
+a1.sources.cpu-source.custom.interval = 5000
+
+a1.sources.runtime-info-source.type = com.tscloud.agent.flume.source.ServiceRoleRuntimeInformationFlumeSource
+#a1.sources.runtime-info-source.consoleManagerUrl=http://192.168.40.19:5058/cloud/rest/console/serverRestServer/getServicerRoleByServerHostName
+a1.sources.runtime-info-source.consoleManagerUrl={{console_manager_url}}
+a1.sources.runtime-info-source.channels = c1
+a1.sources.runtime-info-source.custom.interval = 5000
+
+a1.sources.net-summary-source.type = com.tscloud.agent.flume.source.NetSummaryInfoSource
+a1.sources.net-summary-source.channels = c1
+a1.sources.net-summary-source.custom.interval = 5000
+
+
+a1.sources.mem-source.type = com.tscloud.agent.flume.source.MemInfoSource
+a1.sources.mem-source.channels = c1
+a1.sources.mem-source.custom.interval = 2500
+
+a1.sources.disk-source.type = com.tscloud.agent.flume.source.DiskInfoSource
+a1.sources.disk-source.channels = c1
+a1.sources.disk-source.custom.interval = 7000
+
+a1.sources.monitor-source.type = com.tscloud.agent.flume.source.ServiceRoleMonitorDataFlumeSource
+#a1.sources.monitor-source.consoleManagerUrl=http://192.168.40.19:5058/cloud/rest/console/serverRestServer/getServicerRoleByServerHostName
+a1.sources.monitor-source.consoleManagerUrl={{console_manager_url}}
+a1.sources.monitor-source.channels = c1
+a1.sources.monitor-source.custom.interval = 3000
+
+a1.sources.net-source.type = com.tscloud.agent.flume.source.NetInfoSource
+a1.sources.net-source.channels = c1
+
+# Describe the sink
+#a1.sinks.k1.type = logger
+
+a1.sinks.k2.type = logger
+a1.sinks.k3.type = hbase
+a1.sinks.k3.table = flume_ouput
+a1.sinks.k3.zookeeperQuorum = hadoop01,hadoop02,hadoop03
+a1.sinks.k3.columnFamily = log
+a1.sinks.k3.column = col1
+#a1.sinks.k3.serializer = org.apache.flume.sink.hbase.RegexHbaseEventSerializer
+a1.sinks.k3.serializer = org.apache.flume.sink.hbase.SimpleHbaseEventSerializer
+
+
+a1.sinks.k1.type = logger
+a1.sinks.k4.type = com.tscloud.agent.flume.sink.KafkaSink
+#a1.sinks.k4.metadata.broker.list=hadoop01:9092,hadoop01:9093,hadoop01:9094,hadoop101:9095,hadoop02:9092,hadoop02:9093,hadoop02:9094
+a1.sinks.k4.metadata.broker.list={{kafka_hosts}}
+a1.sinks.k4.partition.key=0
+a1.sinks.k4.serializer.class=kafka.serializer.StringEncoder
+a1.sinks.k4.key.serializer.class=kafka.serializer.StringEncoder
+a1.sinks.k4.request.required.acks=0
+a1.sinks.k4.max.message.size=1000000
+a1.sinks.k4.producer.type=sync
+a1.sinks.k4.custom.encoding=UTF-8
+a1.sinks.k4.custom.topic.name=flume_monitor_sink2
+
+
+
+a1.sinks.logsink.type = com.tscloud.agent.flume.sink.ServiceRoleLogSink
+#a1.sinks.logsink.metadata.broker.list=hadoop01:9092,hadoop01:9093,hadoop01:9094,hadoop101:9095,hadoop02:9092,hadoop02:9093,hadoop02:9094
+a1.sinks.logsink.metadata.broker.list={{kafka_hosts}}
+a1.sinks.logsink.partition.key=0
+a1.sinks.logsink.serializer.class=kafka.serializer.StringEncoder
+a1.sinks.logsink.key.serializer.class=kafka.serializer.StringEncoder
+a1.sinks.logsink.request.required.acks=0
+a1.sinks.logsink.max.message.size=1000000
+a1.sinks.logsink.producer.type=sync
+a1.sinks.logsink.custom.encoding=UTF-8
+a1.sinks.logsink.custom.topic.name=flume_monitor_sink2
+
+a1.sinks.hdfsSink.type = hdfs
+a1.sinks.hdfsSink.hdfs.path = %{HDFS_URL}/flume/cloud-events/%{HOST}-%{ROLE}/%y-%m-%d/%H-%M
+a1.sinks.hdfsSink.hdfs.filePrefix = %{HOST}-%{ROLE}-root-%M
+a1.sinks.hdfsSink.hdfs.writeFormat = Text
+#File format: currently SequenceFile, DataStream or CompressedStream (1)DataStream will not compress output file and please don¡¯t set codeC (2)CompressedStream requires set hdfs.codeC with# an available codeC
+a1.sinks.hdfsSink.hdfs.fileType = DataStream
+#a1.sinks.hdfsSink.hdfs.codeC = gzip
+#a1.sinks.hdfsSink.hdfs.fileType = CompressedStream
+a1.sinks.hdfsSink.hdfs.fileSuffix = .log
+a1.sinks.hdfsSink.hdfs.rollInterval = 600
+a1.sinks.hdfsSink.hdfs.useLocalTimeStamp = true
+a1.sinks.hdfsSink.hdfs.rollSize = 0
+a1.sinks.hdfsSink.hdfs.rollCount = 0
+a1.sinks.hdfsSink.hdfs.batchSize= 100
+a1.sinks.hdfsSink.hdfs.round = true
+a1.sinks.hdfsSink.hdfs.roundValue = 10
+a1.sinks.hdfsSink.hdfs.roundUnit = minute
+
+
+a1.sinks.k1.channel = c1
+a1.sinks.k2.channel = c1
+a1.sinks.k3.channel = c1
+a1.sinks.k4.channel = c1
+a1.sinks.logsink.channel = c2
+a1.sinks.hdfsSink.channel = c2
+
+# Use a channel which buffers events in memory
+#a1.channels.c1.type = memory
+#a1.channels.c1.capacity = 10000
+#a1.channels.c1.transactionCapacity = 100
+
+a1.channels.c1.type = memory
+a1.channels.c1.capacity = 10000
+a1.channels.c1.transactionCapacity = 10000
+a1.channels.c1.byteCapacityBufferPercentage = 20
+a1.channels.c1.byteCapacity = 800000
+
+
+
+a1.channels.c2.type = memory
+a1.channels.c2.capacity = 10000
+a1.channels.c2.transactionCapacity = 10000
+a1.channels.c2.byteCapacityBufferPercentage = 20
+a1.channels.c2.byteCapacity = 800000

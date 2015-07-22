@@ -1,0 +1,6 @@
+---
+- name: Shutdown iptables
+  shell: chkconfig iptables off
+
+- name: create cloud root dir
+  file: name={{cloud_root}} state=directory

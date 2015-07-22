@@ -1,0 +1,17 @@
+---
+- name: Copy flume to dest server
+  copy: src={{repos}}/{{flume_pkg}} dest={{cloud_root}}/{{flume_pkg}}
+
+- name: Remove old install dir
+  shell: rm -rf {{flume_home}}
+  
+- name: Extract flume to dest dir
+  command: chdir=/usr/share /bin/tar xzf {{cloud_root}}/{{flume_pkg}} -C {{cloud_root}} creates={{flume_home}}
+  
+- name: copy flume configure file to dest dir
+  template: src={{item}}.j2 dest={{flume_home}}/conf/{{item}}
+  with_items:
+  - flume-conf.properties
+
+- include: ../../services/tasks/start_flume.yml
+

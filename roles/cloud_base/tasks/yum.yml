@@ -1,0 +1,8 @@
+---
+- name: Copy yum ftp repo configure file to node 
+  template: src={{item}}.j2 dest=/etc/yum.repos.d/{{item}}
+  with_items:
+  - ftp.repo 
+
+#- name: generate repo cache 
+#  shell: yum makecache

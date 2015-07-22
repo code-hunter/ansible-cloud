@@ -1,0 +1,4 @@
+---
+- hosts: es_allnode 
+  roles:
+  - es

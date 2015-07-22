@@ -1,0 +1,4 @@
+---
+- hosts: kafka_allnode 
+  roles:
+  - kafka

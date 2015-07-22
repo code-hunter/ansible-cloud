@@ -1,0 +1,35 @@
+---
+- hosts: hadoop_allnode
+  roles:
+  - hadoop_base
+
+- hosts: hadoop_journalnode
+  roles:
+  - journalnode
+
+- hosts: hadoop_primary_namenode
+  roles:
+  - formatzk
+
+- hosts: hadoop_primary_namenode
+  roles:
+  - primary_namenode
+
+- hosts: hadoop_backup_namenode
+  roles:
+  - backup_namenode
+
+- hosts: hadoop_primary_namenode
+  roles:
+  - zkfc
+
+- hosts: hadoop_backup_namenode
+  roles:
+  - zkfc
+
+- hosts: hadoop_datanode
+  roles:
+  - datanode
+
+
+

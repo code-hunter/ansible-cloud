@@ -1,0 +1,14 @@
+---
+- name: Copy kafka to dest server
+  copy: src={{repos}}/{{kafka_pkg}} dest={{cloud_root}}/{{kafka_pkg}}
+
+- name: Extract kafka to dest dir
+  command: chdir=/usr/share /bin/tar xzf {{cloud_root}}/{{kafka_pkg}} -C {{cloud_root}} creates={{kafka_home}}
+  
+- name: copy kafka configure file to dest dir
+  template: src={{item}}.j2 dest={{kafka_home}}/config/{{item}}
+  with_items:
+  - server.properties
+
+- include: ../../services/tasks/start_kafka.yml
+

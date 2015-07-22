@@ -1,0 +1,18 @@
+---
+- name: copy redis package to dest server
+  copy: src={{repos}}/{{redis_pkg}} dest={{cloud_root}}/{{redis_pkg}}
+
+- name: extract archive to dest cloud home dir
+  command: chdir=/usr/share /bin/tar xzf {{cloud_root}}/{{redis_pkg}} -C {{cloud_root}} creates={{redis_home}}
+
+- name: copy configure files to redis server
+  template: src={{item}}.j2 dest={{redis_home}}/{{item}} 
+  with_items:
+  - redis.conf
+
+- name: make and install redis 
+  shell: cd {{redis_home}};make install
+
+- include: ../../services/tasks/start_redis.yml 
+  
+

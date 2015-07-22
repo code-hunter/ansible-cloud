@@ -1,0 +1,2 @@
+---
+- include: ../../services/tasks/stop_sparkmaster.yml 

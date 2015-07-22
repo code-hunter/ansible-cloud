@@ -1,0 +1,2 @@
+---
+- include: ../../servicspark/tasks/start_spark.yml 

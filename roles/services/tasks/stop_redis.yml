@@ -1,0 +1,3 @@
+---
+- name: stop redis services
+  shell: ps ax | grep -i 'redis' | grep -v grep | awk '{print $1}' | xargs kill -SIGTERM 

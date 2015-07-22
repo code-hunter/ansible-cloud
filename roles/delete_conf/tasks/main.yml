@@ -1,0 +1,2 @@
+---
+- include: ../../services/tasks/delete_conf.yml

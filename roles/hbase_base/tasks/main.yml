@@ -1,0 +1,13 @@
+---
+- name: Copy hbase packages to dest server
+  copy: src={{repos}}/{{hbase_pkg}} dest={{cloud_root}}/{{hbase_pkg}}
+
+- name: Extract archive to cloud home dir
+  command: chdir=/usr/share /bin/tar xzf {{cloud_root}}/{{hbase_pkg}} -C {{cloud_root}} creates={{hbase_home}}
+
+- name: Copy configure files to hbase server
+  template: src={{item}}.j2 dest={{hbase_home}}/conf/{{item}} 
+  with_items:
+  - hbase-site.xml
+  - hbase-env.sh
+  - regionservers 

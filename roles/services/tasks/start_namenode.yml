@@ -1,0 +1,6 @@
+---
+- name: start or stop services
+  shell: export JAVA_HOME={{java_home}};export PATH=$PATH:{{java_home}}/bin;{{hadoop_home}}/sbin/hadoop-daemon.sh start namenode
+
+- name: sleepShell
+  shell: sleep 20

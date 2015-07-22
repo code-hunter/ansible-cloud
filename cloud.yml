@@ -1,0 +1,5 @@
+---
+- include: base.yml
+- include: zookeeper.yml
+- include: hadoop.yml
+- include: hbase.yml

@@ -1,0 +1,74 @@
+[cloud:children]
+zookeeper_allnode
+hadoop_allnode
+hbase_allnode
+kafka_allnode
+es_allnode
+spark_allnode
+redis_allnode
+
+[zookeeper_allnode]
+master zoo_id=1
+slaver1 zoo_id=2
+slaver2 zoo_id=3
+
+[kafka_allnode]
+master broker_id=100
+slaver1 broker_id=101
+slaver2 broker_id=102
+
+[hadoop_allnode:children]
+hadoop_namenode
+hadoop_datanode
+
+[hadoop_journalnode:children]
+hadoop_namenode
+hadoop_datanode
+
+[hadoop_namenode:children]
+hadoop_primary_namenode
+hadoop_backup_namenode
+#hadoop_secondary_namenode
+
+[hadoop_primary_namenode]
+master
+
+#[hadoop_secondary_namenode]
+#master
+
+[hadoop_backup_namenode]
+slaver1
+
+[hadoop_datanode]
+slaver1
+slaver2
+
+[hbase_allnode:children]
+hbase_master
+hbase_regionserver
+
+[hbase_master]
+master
+
+[hbase_regionserver]
+slaver1
+slaver2
+
+[es_allnode]
+master
+slaver1
+slaver2
+
+[spark_allnode:children]
+spark_master
+spark_slaver
+
+[spark_master]
+master
+
+[spark_slaver]
+slaver1
+slaver2
+
+[redis_allnode]
+master

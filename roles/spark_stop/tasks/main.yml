@@ -1,0 +1,2 @@
+---
+- include: ../../servicspark/tasks/stop_spark.yml 

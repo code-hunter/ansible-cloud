@@ -1,0 +1,3 @@
+---
+- name: stop flume services
+  shell: ps ax | grep -i 'flume' | grep java | grep -v grep | awk '{print $1}' | xargs kill -9 

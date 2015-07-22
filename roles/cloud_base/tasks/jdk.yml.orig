@@ -1,0 +1,14 @@
+---
+- name: Copy jdk to dest server
+  copy: src={{repos}}/{{jdk_pkg}} dest=/opt/{{jdk_pkg}}
+
+- name: Extract jdk to dest dir
+  command: chdir=/usr/share /bin/tar xzf /opt/{{jdk_pkg}} -C /opt creates={{java_home}}
+
+- name: set java env profile
+  copy: src=java.sh dest=/etc/profile.d/java.sh owner=root group=root mode=0644
+  register: java_env_profile
+
+- name: source java env profile
+  shell: source /etc/profile.d/java.sh                                                                                                                                 
+  when: java_env_profile|changed

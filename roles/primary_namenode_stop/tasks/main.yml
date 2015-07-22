@@ -1,0 +1,9 @@
+---
+- include: ../../services/tasks/stop_namenode.yml 
+#- name: start namenode service
+#  shell: export JAVA_HOME={{java_home}};export PATH=$PATH:{{java_home}}/bin:{{hadoop_home}}/sbin;
+#         sh hadoop-daemon.sh start namenode;
+#         sh hadoop-daemon.sh start journalnode;
+#         sh hadoop-daemon.sh start zkfc;
+#         sh yarn-daemon.sh start resourcemanager
+

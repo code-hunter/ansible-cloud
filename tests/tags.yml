@@ -1,0 +1,12 @@
+---
+- hosts: tests 
+  tasks:
+  - name: test1
+    shell: touch /tmp/test1
+    tags:
+      - test1
+  
+  - name: test2
+    shell: touch /tmp/test2
+    tags:
+      - test2

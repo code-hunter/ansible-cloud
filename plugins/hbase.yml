@@ -1,0 +1,12 @@
+---
+- hosts: hbase_allnode
+  roles:
+  - hbase_base
+
+- hosts: hbase_master
+  roles:
+  - hmaster
+
+- hosts: hbase_regionserver
+  roles:
+  - hregionserver

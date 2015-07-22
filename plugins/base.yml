@@ -1,0 +1,4 @@
+---
+- hosts: cloud
+  roles: 
+  - cloud_base

@@ -1,0 +1,8 @@
+---
+#- include: dns.yml
+#- include: python.yml
+- include: yum.yml
+- include: system.yml
+- include: ntp.yml
+- include: jdk.yml
+- include: flume.yml

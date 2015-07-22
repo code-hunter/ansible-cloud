@@ -1,0 +1,3 @@
+---
+- include: ../../services/tasks/start_flume.yml 
+

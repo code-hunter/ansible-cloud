@@ -1,0 +1,23 @@
+---
+- name: Copy hadoop packages to dest server
+  copy: src={{repos}}/{{hadoop_pkg}} dest={{cloud_root}}/{{hadoop_pkg}}
+
+- name: Extract archive to cloud home dir
+  command: chdir=/usr/share /bin/tar xzf {{cloud_root}}/{{hadoop_pkg}} -C {{cloud_root}} creates={{hadoop_home}}
+
+- name: Copy configure files to namenode 
+  template: src={{item}}.j2 dest={{hadoop_home}}/etc/hadoop/{{item}} 
+  with_items:
+  - core-site.xml
+  - hdfs-site.xml
+  - mapred-site.xml
+  - yarn-site.xml
+  - yarn-env.sh
+  - hadoop-env.sh
+  - slaves
+
+#- name: Create the data directory for the namenode metadata
+#  file: path={{hadoop_namenode_dir}} state=directory 
+
+#- name: Format namenode
+#  shell: source {{hadoop_home}}/etc/hadoop/setenv.sh  

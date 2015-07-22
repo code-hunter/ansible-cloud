@@ -1,0 +1,10 @@
+---
+- name: touch test1
+  shell: touch /tmp/test1
+  tags:
+    - test1
+
+- name: touch test2
+  shell: touch /tmp/test2
+  tags:
+    - test2

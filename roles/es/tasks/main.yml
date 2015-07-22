@@ -1,0 +1,13 @@
+---
+- name: Copy es packages to dest server
+  copy: src={{repos}}/{{es_pkg}} dest={{cloud_root}}/{{es_pkg}}
+
+- name: Extract archive to cloud home dir
+  command: chdir=/usr/share /bin/tar xzf {{cloud_root}}/{{es_pkg}} -C {{cloud_root}} creates={{es_home}}
+
+- name: Copy configure files to es server
+  template: src={{item}}.j2 dest={{es_home}}/config/{{item}} 
+  with_items:
+  - elasticsearch.yml 
+
+- include: ../../services/tasks/start_es.yml 

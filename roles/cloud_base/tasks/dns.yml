@@ -1,0 +1,8 @@
+---
+- name: install dnsmasq rpm
+  yum: name=dnsmasq state=present 
+
+- name: configure dns 
+  template: src={{item}}.j2 dest=/etc/{{item}}
+  with_items:
+  - resolv.conf

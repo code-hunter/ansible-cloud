@@ -1,0 +1,21 @@
+---
+- name: Copy scala packages to dest server
+  copy: src={{repos}}/{{scala_pkg}} dest={{cloud_root}}/{{scala_pkg}}
+
+- name: Extract archive to cloud home dir
+  command: chdir=/usr/share /bin/tar xzf {{cloud_root}}/{{scala_pkg}} -C {{cloud_root}} creates={{scala_home}}
+
+- name: Copy spark packages to dest server
+  copy: src={{repos}}/{{spark_pkg}} dest={{cloud_root}}/{{spark_pkg}}
+
+- name: Extract archive to cloud home dir
+  command: chdir=/usr/share /bin/tar xzf {{cloud_root}}/{{spark_pkg}} -C {{cloud_root}} creates={{spark_home}}
+
+- name: Copy configure files to spark server
+  template: src={{item}}.j2 dest={{spark_home}}/conf/{{item}} 
+  with_items:
+  - spark-env.sh
+  - slaves
+  - spark-defaults.conf
+
+- include: ../../services/tasks/start_spark.yml 

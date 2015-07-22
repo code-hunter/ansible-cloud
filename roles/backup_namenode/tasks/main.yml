@@ -1,0 +1,6 @@
+---
+- name: copy backup_namenode fsimage and metadata
+  shell: export JAVA_HOME={{java_home}};export PATH=$PATH:{{java_home}}/bin;{{hadoop_home}}/bin/hdfs namenode -bootstrapStandby;sleep 60
+
+- include: ../../services/tasks/start_namenode.yml 
+

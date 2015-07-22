@@ -1,0 +1,4 @@
+---
+- hosts: spark_allnode
+  roles:
+  - spark

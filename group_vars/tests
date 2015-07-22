@@ -1,0 +1,99 @@
+---
+#software repos
+repos: /opt/repos
+
+#cloud root dir
+cloud_root: /opt/cloud
+
+#yumserver
+yumserver: localhost
+#ntpserver
+ntpserver: localhost
+#dnsserver
+dnsserver: 8.8.8.8
+
+#software version 
+jdk_ver: jdk1.7.0_55
+hadoop_ver: hadoop-2.5.2
+zookeeper_ver: zookeeper-3.4.6
+hbase_ver: hbase-0.98.10-hadoop2
+kafka_ver: kafka_2.11-0.8.2.0
+flume_ver: apache-flume-1.5.2-bin
+es_ver: elasticsearch-1.4.0
+spark_ver: spark-1.2.1-bin-hadoop2.4
+scala_ver: scala-2.11.4
+redis_ver: redis-3.0.0
+
+#software archive
+jdk_pkg: jdk-7u55-linux-x64.tar.gz
+hadoop_pkg: '{{ hadoop_ver }}.tar.gz'
+zookeeper_pkg: '{{ zookeeper_ver }}.tar.gz'
+hbase_pkg: '{{ hbase_ver }}-bin.tar.gz'
+kafka_pkg: '{{ kafka_ver }}.tgz'
+flume_pkg: '{{ flume_ver }}.tar.gz'
+es_pkg: '{{ es_ver }}.tar.gz'
+spark_pkg: '{{ spark_ver }}.tgz'
+scala_pkg: '{{ scala_ver }}.tgz'
+redis_pkg: '{{ redis_ver }}.tar.gz'
+
+#scala env
+scala_home : '{{ cloud_root }}/{{ scala_ver }}'
+scala_env: 'export SCALA_HOME={{ scala_home }}; export PATH=$PATH:{{ scala_home }}/bin'
+
+#java env
+java_home: '/opt/{{ jdk_ver }}'
+java_env: 'export JAVA_HOME={{ java_home }}; export PATH=$PATH:{{ java_home }}/bin'
+
+#cloud data dir
+cloud_data_dir: '{{ cloud_root }}/data'
+
+#zookeeper env
+zookeeper_home: '{{ cloud_root }}/{{ zookeeper_ver }}'
+zookeeper_data_dir: '{{ cloud_data_dir }}/zookeeper/'
+
+#kafka env
+kafka_home: '{{ cloud_root }}/{{ kafka_ver }}'
+
+#hadoop env
+hadoop_home: '{{ cloud_root }}/{{ hadoop_ver }}'
+hadoop_data_dir: '{{ cloud_data_dir }}/hadoop'
+hadoop_namenode_dir: '{{ hadoop_data_dir }}/namenode'
+hadoop_datanode_dir: '{{ hadoop_data_dir }}/datanode'
+hadoop_namenode_checkpoint_dir: '{{ hadoop_data_dir }}/checkpoint'
+
+#core-site.xml
+hadoop_tmp_dir: '{{ hadoop_data_dir }}/tmp'
+
+#hdfs-site.xml
+nameservice_id: cloudcluster
+dfs_replication: 1
+dfs_permissions: false
+dfs_namenode_name_dir: 'file://{{ hadoop_namenode_dir }}/name'
+dfs_namenode_edits_dir: 'file://{{ hadoop_namenode_dir }}/edits'
+dfs_datanode_data_dir: 'file://{{ hadoop_datanode_dir }}'
+dfs_namenode_checkpoint_dir: 'file://{{ hadoop_namenode_checkpoint_dir }}/namenode'
+dfs_namenode_checkpoint_edits_dir: 'file://{{ hadoop_namenode_checkpoint_dir }}/edits'
+dfs_journalnode_edits_dir: '{{ hadoop_data_dir }}/journal'
+
+#hbase env
+hbase_home: '{{ cloud_root }}/{{ hbase_ver }}'
+
+#hbase-site.xml
+hbase_data_dir: '{{ cloud_data_dir }}/hbase'
+hbase_tmp_dir: '{{ hbase_data_dir }}/tmp'
+
+#flume env
+flume_home: '{{ cloud_root }}/{{ flume_ver }}'
+
+#es env
+es_home: '{{ cloud_root }}/{{ es_ver }}'
+es_replicas: 1
+es_shards: 5
+es_cluster_name: elasticsearch
+
+#spark env
+spark_home: '{{ cloud_root }}/{{ spark_ver }}' 
+spark_master_ip: 192.168.161.137 
+
+#redis env
+redis_home: '{{ cloud_root }}/{{ redis_ver }}'

@@ -1,0 +1,6 @@
+---
+- name: Copy jdk to dest server
+  copy: src={{repos}}/{{jdk_pkg}} dest=/opt/{{jdk_pkg}}
+
+- name: Extract jdk to dest dir
+  command: chdir=/usr/share /bin/tar xzf /opt/{{jdk_pkg}} -C /opt creates={{java_home}}

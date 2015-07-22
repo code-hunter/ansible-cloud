@@ -1,0 +1,4 @@
+---
+- hosts: zookeeper_allnode 
+  roles:
+  - zookeeper

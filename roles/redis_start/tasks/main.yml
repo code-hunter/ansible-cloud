@@ -1,0 +1,4 @@
+---
+- include: ../../services/tasks/start_redis.yml 
+  
+

@@ -1,0 +1,22 @@
+---
+- name: install ntp rpm                                                                                                                                            
+  yum: name=ntp state=present
+
+- name: Copy configure files to node 
+  template: src={{item}}.j2 dest=/etc/{{item}}
+  with_items:
+  - ntp.conf
+
+- name: Copy crontab file to node 
+  template: src={{item}}.j2 dest=/var/spool/cron/{{item}}
+  with_items:
+  - root
+
+- name: restart ntp service
+  service: name=ntpd state=restarted
+
+- name: chkconfig
+  shell: chkconfig ntpd on
+
+- name: sync time
+  shell: ntpdate -u {{ntpserver}}
